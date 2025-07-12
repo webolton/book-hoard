@@ -8,6 +8,7 @@ gem 'jbuilder'
 gem 'kamal', require: false
 gem 'puma'
 gem 'rails', '~> 8.0.2'
+gem 'slim'
 gem 'solid_cable'
 gem 'solid_cache'
 gem 'solid_queue'
@@ -21,4 +22,5 @@ group :development, :test do
   gem 'brakeman', require: false
   gem 'pry'
   gem 'rubocop-rails'
+  gem 'slim_lint'
 end
