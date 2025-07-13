@@ -1,0 +1,9 @@
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+  .navbar {
+    min-height: 64px;
+  }
+  .navbar-brand {
+    font-size: 24px !important;
+  }
+}
