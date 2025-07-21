@@ -15,6 +15,9 @@ html
     = vite_client_tag
     = vite_javascript_tag 'application'
   body
-    main
-      = render 'navigation/header'
-      = yield
+    = render 'navigation/header'
+    .container-fluid
+      .row
+        = render 'navigation/sidebar'
+        main.col-md-9.ms-sm-auto.col-lg-10
+          = yield

@@ -24,3 +24,10 @@ group :development, :test do
   gem 'rubocop-rails'
   gem 'slim_lint'
 end
+
+group :test do
+  gem 'capybara'
+  gem 'factory_bot_rails'
+  gem 'rspec-rails'
+  gem 'simplecov'
+end
