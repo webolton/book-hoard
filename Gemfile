@@ -7,7 +7,7 @@ gem 'bootsnap', require: false
 gem 'jbuilder'
 gem 'kamal', require: false
 gem 'puma'
-gem 'rails', '~> 8.0.2'
+gem 'rails', '~> 8.0.3'
 gem 'slim'
 gem 'solid_cable'
 gem 'solid_cache'
