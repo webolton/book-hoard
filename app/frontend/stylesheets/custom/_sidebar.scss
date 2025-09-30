@@ -1,7 +1,13 @@
-// Medium devices (tablets, 768px and up)
 @media (min-width: 768px) {
   nav.bg-accent1 {
-    width: 200px;
     height: 100vh;
+  }
+}
+
+@media (min-width: 868px) and (max-width: 991.98px) {
+  nav.bg-accent1 {
+    flex-basis: 200px;
+    flex-grow: 0;
+    flex-shrink: 0;
   }
 }
