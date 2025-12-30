@@ -1,0 +1,5 @@
+- flash.each do |key, message|
+  - alert_class = notice_class(key)
+  = content_tag :div, class: "alert alert-#{alert_class} alert-dismissible fade show col-lg-11 col-md-12" do
+    = message
+    button.btn-close[type="button" data-bs-dismiss="alert" aria-label="Close"]

@@ -23,6 +23,6 @@ class AuthorsController < ApplicationController
   end
 
   def author_params
-    params.expect(author: %i[first_name last_name distinction])
+    params.expect(author: %i[first_name last_name additional_information])
   end
 end
