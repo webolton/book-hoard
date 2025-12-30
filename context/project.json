@@ -1,0 +1,405 @@
+{
+  "project": {
+    "name": "Book-Hoard",
+    "description": "A scholarly article and book cataloging application for organizing thousands of scanned academic articles and books",
+    "purpose": "Provide searchable catalog, file management, and organization for scanned scholarly materials",
+    "status": "early_development",
+    "last_updated": "2025-12-30"
+  },
+  "technical_stack": {
+    "backend": {
+      "framework": "Ruby on Rails",
+      "version": "8.0.2",
+      "language": "Ruby",
+      "database": "SQLite3",
+      "production_database_recommendation": "PostgreSQL",
+      "template_engine": "Slim",
+      "background_jobs": "Solid Queue",
+      "cache": "Solid Cache",
+      "cable": "Solid Cable",
+      "server": "Puma"
+    },
+    "frontend": {
+      "build_tool": "Vite",
+      "javascript_framework": "Stimulus",
+      "version": "3.2.2",
+      "turbo": "@hotwired/turbo-rails 8.0.16",
+      "styling": "Bootstrap 5.3.7",
+      "icons": "Bootstrap Icons 1.13.1",
+      "additional_libraries": ["jQuery 3.7.1", "Popper.js 2.11.8"]
+    },
+    "testing": {
+      "framework": "RSpec",
+      "tools": [
+        "Capybara",
+        "Factory Bot",
+        "Faker",
+        "SimpleCov",
+        "Brakeman",
+        "RuboCop Rails",
+        "Slim Lint"
+      ]
+    },
+    "deployment": {
+      "tool": "Kamal",
+      "configured": true
+    }
+  },
+  "database_schema": {
+    "authors": {
+      "fields": [
+        "id (primary key)",
+        "first_name (string)",
+        "last_name (string)",
+        "additional_information (string)",
+        "created_at (datetime)",
+        "updated_at (datetime)"
+      ],
+      "validations": [
+        "Requires at least first_name OR last_name"
+      ]
+    },
+    "entries": {
+      "fields": [
+        "id (primary key)",
+        "full_title (text)",
+        "publication_date (datetime)",
+        "start_page (integer)",
+        "end_page (integer)",
+        "start_folio (integer)",
+        "end_folio (integer)",
+        "start_side (string)",
+        "end_side (string)",
+        "type (integer enum)",
+        "isbn (string)",
+        "isbn13 (string)",
+        "format (integer)",
+        "language (string)",
+        "publisher (string)",
+        "file_location (string)",
+        "volume (integer)",
+        "series (string)",
+        "notes (text)",
+        "created_at (datetime)",
+        "updated_at (datetime)"
+      ],
+      "enums": {
+        "type": {
+          "book": 0
+        }
+      },
+      "critical_fields": [
+        "file_location"
+      ]
+    },
+    "authors_entries": {
+      "type": "join_table",
+      "fields": [
+        "entry_id (integer, not null)",
+        "author_id (integer, not null)"
+      ],
+      "indexes": [
+        "author_id and entry_id",
+        "entry_id and author_id"
+      ]
+    }
+  },
+  "models": {
+    "Entry": {
+      "file": "app/models/entry.rb",
+      "associations": [
+        "has_many :authors, through: :authors_entries"
+      ],
+      "enums": [
+        "type: { book: 0 }"
+      ],
+      "status": "needs_expansion",
+      "missing_features": [
+        "Additional entry types",
+        "Field validations",
+        "File management logic",
+        "Search functionality"
+      ]
+    },
+    "Author": {
+      "file": "app/models/author.rb",
+      "associations": [
+        "has_many :entries, through: :authors_entries"
+      ],
+      "validations": [
+        "first_name presence (conditional)",
+        "last_name presence (conditional)"
+      ],
+      "status": "functional"
+    }
+  },
+  "controllers": {
+    "EntriesController": {
+      "file": "app/controllers/entries_controller.rb",
+      "implemented_actions": ["new"],
+      "missing_actions": ["create", "index", "show", "edit", "update", "destroy"],
+      "status": "minimal"
+    },
+    "AuthorsController": {
+      "file": "app/controllers/authors_controller.rb",
+      "implemented_actions": ["new_modal", "create"],
+      "features": [
+        "Turbo Stream responses",
+        "Modal-based creation",
+        "Flash notices",
+        "Error handling"
+      ],
+      "status": "functional"
+    },
+    "DashboardController": {
+      "status": "unknown"
+    }
+  },
+  "views": {
+    "template_engine": "Slim",
+    "entries": {
+      "files": [
+        "new.html.slim",
+        "_form.html.slim"
+      ],
+      "issues": [
+        "Incomplete form fields",
+        "No file upload UI",
+        "Author selection not implemented"
+      ]
+    },
+    "authors": {
+      "files": [
+        "_form.html.slim",
+        "_new_modal_link.html.slim"
+      ],
+      "status": "functional",
+      "features": [
+        "Bootstrap modal integration",
+        "Turbo frame integration",
+        "Error display"
+      ]
+    }
+  },
+  "javascript": {
+    "stimulus_controllers": {
+      "authors_modal_controller": {
+        "file": "app/frontend/javascript/controllers/authors_modal_controller.js",
+        "purpose": "Handle author modal show/hide and cleanup",
+        "issues": [
+          "Uses jQuery instead of vanilla JS",
+          "Should use Bootstrap 5 native API"
+        ],
+        "status": "needs_refactoring"
+      },
+      "hello_controller": {
+        "status": "likely_boilerplate"
+      }
+    }
+  },
+  "routes": {
+    "root": "dashboard#index",
+    "resources": [
+      "authors (with new_modal collection route)",
+      "entries"
+    ],
+    "health_check": "/up"
+  },
+  "development": {
+    "setup": {
+      "vite": "bin/vite dev",
+      "rails": "bundle exec rails s"
+    },
+    "servers_required": 2,
+    "note": "Run Vite and Rails in separate terminals"
+  },
+  "migrations": [
+    "20250718235938_create_entries.rb",
+    "20250719001136_create_authors.rb",
+    "20250719002054_create_join_table_entry_author.rb",
+    "20250805003228_start_and_end_side_to_entries.rb"
+  ],
+  "testing": {
+    "framework": "RSpec",
+    "coverage_tool": "SimpleCov",
+    "model_specs": [
+      "spec/models/author_spec.rb (functional)",
+      "spec/models/entry_spec.rb (basic)"
+    ],
+    "request_specs": [
+      "spec/requests/entries_spec.rb (needs implementation)",
+      "spec/requests/dashboard_spec.rb (needs implementation)"
+    ],
+    "acceptance_specs": "directory structure started"
+  },
+  "todos": {
+    "high_priority": [
+      {
+        "category": "Entry CRUD",
+        "tasks": [
+          "Implement create action in EntriesController",
+          "Build comprehensive entry form with all fields",
+          "Implement index action with search/filter",
+          "Add show action for entry details",
+          "Add edit and update actions"
+        ]
+      },
+      {
+        "category": "File Management",
+        "tasks": [
+          "Add file upload capability",
+          "Implement file renaming logic",
+          "Create file storage organization strategy",
+          "Build file browser/selector UI",
+          "Add file preview functionality"
+        ]
+      },
+      {
+        "category": "Entry Form",
+        "tasks": [
+          "Add all schema fields to form",
+          "Implement author selection/association",
+          "Add multi-author support",
+          "Create entry type selector"
+        ]
+      }
+    ],
+    "medium_priority": [
+      {
+        "category": "Search & Discovery",
+        "tasks": [
+          "Add full-text search",
+          "Filter by author",
+          "Filter by publication date",
+          "Filter by entry type",
+          "Add tags/categories system"
+        ]
+      },
+      {
+        "category": "Author Management",
+        "tasks": [
+          "Create author index page",
+          "Add author show page",
+          "Implement author edit/update",
+          "Add author merge functionality"
+        ]
+      },
+      {
+        "category": "Dashboard",
+        "tasks": [
+          "Review and enhance dashboard",
+          "Add statistics",
+          "Show recent entries",
+          "Quick search widget"
+        ]
+      }
+    ],
+    "low_priority": [
+      {
+        "category": "JavaScript Refactoring",
+        "tasks": [
+          "Remove jQuery dependencies",
+          "Refactor authors_modal_controller to use Bootstrap 5 JS",
+          "Add more Stimulus controllers",
+          "Implement Turbo Drive error handling"
+        ]
+      },
+      {
+        "category": "Testing Coverage",
+        "tasks": [
+          "Add controller request specs",
+          "Add system/acceptance specs",
+          "Increase model test coverage",
+          "Add JavaScript controller tests"
+        ]
+      },
+      {
+        "category": "Deployment",
+        "tasks": [
+          "Configure production database (PostgreSQL)",
+          "Set up Kamal deployment",
+          "Configure production asset compilation",
+          "Set up backup strategy"
+        ]
+      }
+    ]
+  },
+  "known_issues": [
+    {
+      "issue": "Missing join table model",
+      "description": "authors_entries has no explicit model",
+      "recommendation": "Add has_and_belongs_to_many or create AuthorsEntry model"
+    },
+    {
+      "issue": "jQuery dependency",
+      "description": "jQuery used alongside Stimulus/Turbo",
+      "recommendation": "Minimize or eliminate jQuery"
+    },
+    {
+      "issue": "Entry type enum limited",
+      "description": "Only supports book type",
+      "recommendation": "Add article, chapter, etc."
+    },
+    {
+      "issue": "No form validation",
+      "description": "Entry form has no validations",
+      "recommendation": "Add required field validations"
+    },
+    {
+      "issue": "No file upload",
+      "description": "file_location field exists but no upload mechanism",
+      "recommendation": "Implement Active Storage or similar"
+    }
+  ],
+  "future_enhancements": [
+    "OCR integration for PDF text extraction",
+    "Citation generation (MLA, APA, Chicago)",
+    "Export to BibTeX, CSV",
+    "Tagging system",
+    "Notes and annotations",
+    "Collection management",
+    "REST API",
+    "Bulk import from BibTeX"
+  ],
+  "scalability_considerations": [
+    "Switch to PostgreSQL for production",
+    "Add full-text search engine (Elasticsearch, pg_search)",
+    "Implement cloud file storage (Active Storage with S3)",
+    "Add pagination",
+    "Background jobs for file processing"
+  ],
+  "design_patterns": [
+    "Turbo Streams for dynamic updates",
+    "Modal workflows",
+    "Turbo Frames for isolated content",
+    "RESTful resources",
+    "Stimulus controllers for progressive enhancement"
+  ],
+  "configuration_files": {
+    "routes": "config/routes.rb",
+    "database": "config/database.yml",
+    "vite": "config/vite.json",
+    "vite_config": "vite.config.ts",
+    "frontend_deps": "package.json",
+    "ruby_deps": "Gemfile",
+    "dev_processes": "Procfile.dev",
+    "deployment": "config/deploy.yml"
+  },
+  "directory_structure": {
+    "app": {
+      "controllers": "Rails controllers",
+      "models": "ActiveRecord models",
+      "views": "Slim templates",
+      "frontend": {
+        "entrypoints": "Vite entry points",
+        "javascript": "Stimulus controllers and JS modules",
+        "stylesheets": "SCSS files"
+      }
+    },
+    "config": "Application configuration",
+    "db": "Database schema and migrations",
+    "spec": "RSpec tests",
+    "public": "Static assets",
+    "storage": "SQLite database files"
+  }
+}
