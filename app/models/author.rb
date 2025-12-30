@@ -8,5 +8,15 @@ class Author < ApplicationRecord
 
   validates :first_name,
             uniqueness: { scope: :last_name,
-                          message: 'Full author name already used' }
+                          message: I18n.t('authors.validations.duplicate_full_name') }
+
+  validate :first_or_last_name_present
+
+  private
+
+  def first_or_last_name_present
+    return unless first_name.blank? && last_name.blank?
+
+    errors.add(:base, I18n.t('authors.validations.first_and_last_name_blank'))
+  end
 end

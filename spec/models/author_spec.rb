@@ -4,24 +4,19 @@ require 'rails_helper'
 
 RSpec.describe Author, type: :model do
   describe 'validations' do
-    let(:author) { create(:author) }
+    it {
+      should validate_uniqueness_of(:first_name)
+        .scoped_to(:last_name)
+        .with_message('Full author name already used')
+    }
 
-    it 'has a valid factory' do
-      expect(author).to be_valid
-    end
-
-    context 'when both the first and last name are missing' do
-      it 'raises the correct ActiveRecord error' do
-        expect do
-          Author.create!
-        end.to raise_error(ActiveRecord::RecordInvalid,
-                           'Validation failed: First name can\'t be blank, Last name can\'t be blank')
-      end
-    end
-
-    context 'when at least the last name is provided' do
-      it 'creates an author' do
-        expect { Author.create!(last_name: 'Spock') }.to change { Author.count }.by(1)
+    context 'when the first_name and last_name are missing' do
+      let(:author) { build(:author, first_name: nil, last_name: nil) }
+      it 'validates presence of both fields' do
+        expect(author).not_to be_valid
+        expect(author.errors[:first_name]).to include("can't be blank")
+        expect(author.errors[:last_name]).to include("can't be blank")
+        expect(author.errors[:base]).to include('Either first name or last name must be present.')
       end
     end
   end

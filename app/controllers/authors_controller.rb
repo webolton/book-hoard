@@ -4,7 +4,7 @@ class AuthorsController < ApplicationController
   def create
     @author = Author.new(author_params)
     if @author.save
-      flash.now[:notice] = t('authors.create_success')
+      flash.now[:notice] = t('authors.notices.create_success')
       render turbo_stream: [
         turbo_stream.update('new_author_modal', partial: 'new_modal_link'),
         turbo_stream.update('notices', partial: 'shared/notices')

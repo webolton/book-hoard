@@ -1,0 +1,7 @@
+en:
+  authors:
+    notices:
+      create_success: "Author successfully created"
+    validations:
+      duplicate_full_name: "Full author name already used"
+      first_and_last_name_blank: "Either first name or last name must be present."
