@@ -301,6 +301,8 @@ GEM
       rubocop-ast (>= 1.44.0, < 2.0)
     ruby-progressbar (1.13.0)
     securerandom (0.4.1)
+    shoulda-matchers (7.0.1)
+      activesupport (>= 7.1)
     simplecov (0.22.0)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
@@ -405,6 +407,7 @@ DEPENDENCIES
   rails (~> 8.0.2)
   rspec-rails
   rubocop-rails
+  shoulda-matchers
   simplecov
   slim
   slim_lint
