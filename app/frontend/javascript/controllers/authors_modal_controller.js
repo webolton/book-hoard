@@ -15,15 +15,18 @@ export default class extends Controller {
     if (modalElement) {
       this.modal = new Modal(modalElement)
       this.modal.show()
+      
+      // Listen for modal hidden event to reset the frame
+      modalElement.addEventListener('hidden.bs.modal', () => {
+        this.resetFrame()
+      }, { once: true })
     }
   }
 
   submitEnd(event) {
     console.log('Submit end event:', event.detail)
-    // Close modal on successful form submission
-    if (event.detail.success) {
-      this.closeModal()
-    }
+    // Close modal after form submission (the turbo stream will replace the frame)
+    this.closeModal()
   }
 
   closeModal() {
@@ -39,5 +42,22 @@ export default class extends Controller {
     document.body.classList.remove('modal-open')
     const backdrops = document.querySelectorAll('.modal-backdrop')
     backdrops.forEach(backdrop => backdrop.remove())
+  }
+
+  resetFrame() {
+    // Use Turbo to reload the frame with just the link
+    const frame = document.getElementById('new_author_modal')
+    if (frame) {
+      // Perform a Turbo visit to reload the frame with the link
+      fetch('/authors/new_modal_link', {
+        headers: {
+          'Accept': 'text/vnd.turbo-stream.html, text/html, application/xhtml+xml'
+        }
+      })
+      .then(response => response.text())
+      .then(html => {
+        frame.innerHTML = html
+      })
+    }
   }
 }

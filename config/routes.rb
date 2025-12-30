@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :authors do
     collection do
       get 'new_modal'
+      get 'new_modal_link'
     end
   end
 
