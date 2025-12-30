@@ -10,13 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_05_003228) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_30_183352) do
   create_table "authors", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
     t.string "additional_information"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["first_name", "last_name"], name: "index_authors_on_first_name_and_last_name", unique: true
   end
 
   create_table "authors_entries", id: false, force: :cascade do |t|
