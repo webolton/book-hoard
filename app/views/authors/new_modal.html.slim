@@ -1,0 +1,3 @@
+= turbo_frame_tag 'new_author_modal' do
+  div[data-controller='authors-modal' data-action="turbo:submit-end->authors-modal#submitEnd"]
+    = render 'authors/form', author: @author

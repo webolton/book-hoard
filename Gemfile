@@ -13,7 +13,6 @@ gem 'solid_cable'
 gem 'solid_cache'
 gem 'solid_queue'
 gem 'sqlite3'
-gem 'stimulus-rails'
 gem 'thruster', require: false
 gem 'turbo-rails'
 gem 'vite_rails'
