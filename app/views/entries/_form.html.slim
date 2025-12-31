@@ -1,15 +1,16 @@
 = form_with model: @entry, html: { class: 'g-3' } do |form|
   .col-6
     label.form-label.mb-0.pb-2.pt-1
-      | Author
+      | Authors
     = turbo_frame_tag 'new_author_modal'
       = link_to 'New author', new_modal_authors_path, { class: 'btn btn-link text-end pb-2 pt-1 border-0' }
-  .col-12[data-controller="author-autocomplete"]
-    = form.hidden_field :author_id, data: { author_autocomplete_target: 'authorId' }
-    input.form-control.mb-3[type="text" placeholder="Search author..." data-author-autocomplete-target="searchInput"
-      data-action="input->author-autocomplete#search keydown->author-autocomplete#handleKeydown"]
-    ul.list-group[data-author-autocomplete-target="results" style="display: none;"]
-  .col-12.mb-3
+  .col-12.mb-3[data-controller="authors-list"]
+    #authors-container[data-authors-list-target="container"]
+      = form.fields_for :authors_entries do |authors_form|
+        = render 'author_field', f: authors_form
+    .mt-2
+      = link_to '+ Add Author', '#', class: 'btn btn-sm btn-outline-primary', data: { action: 'click->authors-list#addAuthor' }
+  .col-12.mb-3x
     label.form-label
       | Full Title
     = form.text_area :full_title, class: 'form-control', rows: 3
