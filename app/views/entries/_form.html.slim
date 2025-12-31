@@ -9,11 +9,15 @@
     input.form-control.mb-3[type="text" placeholder="Search author..." data-author-autocomplete-target="searchInput"
       data-action="input->author-autocomplete#search keydown->author-autocomplete#handleKeydown"]
     ul.list-group[data-author-autocomplete-target="results" style="display: none;"]
-  .col-12
+  .col-12.mb-3
     label.form-label
       | Full Title
     = form.text_area :full_title, class: 'form-control', rows: 3
-  .col-12[data-controller="publication-date"]
+  .col-12.mb-3
+    label.form-label
+      | Type
+    = form.select :type, options_for_select(@types, @entry&.type), { prompt: 'Select type' }, class: 'form-select'
+  .col-12.mb-3[data-controller="publication-date"]
     label.form-label
       | Publication date
     = form.hidden_field :publication_date, data: { publication_date_target: 'dateField' }
