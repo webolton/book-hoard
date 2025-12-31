@@ -24,6 +24,13 @@ class AuthorsController < ApplicationController
     render partial: 'new_modal_link'
   end
 
+  def search
+    @authors = Author.search(params[:q])
+    render json: @authors.map do |author|
+      { id: author.id, name: author.full_name }
+    end
+  end
+
   private
 
   def require_turbo_frame

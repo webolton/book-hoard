@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     collection do
       get 'new_modal'
       get 'new_modal_link'
+      get 'search'
     end
   end
 

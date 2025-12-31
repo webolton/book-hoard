@@ -4,8 +4,10 @@
       | Author
     = turbo_frame_tag 'new_author_modal'
       = link_to 'New author', new_modal_authors_path, { class: 'btn btn-link text-end pb-2 pt-1 border-0' }
-  .col-6
-    input.form-control[type="text_area" rows="3"]
+  .col-12[data-controller="author-autocomplete"]
+    = form.hidden_field :author_id, data: { author_autocomplete_target: 'authorId' }
+    input.form-control.mb-3[type="text" placeholder="Search author..." data-author-autocomplete-target="searchInput" data-action="input->author-autocomplete#search keydown->author-autocomplete#handleKeydown"]
+    ul.list-group[data-author-autocomplete-target="results" style="display: none;"]
   .col-12
     label.form-label
       | Full Title
