@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class AuthorsController < ApplicationController
+  before_action :require_turbo_frame, only: [:new_modal]
+
   def create
     @author = Author.new(author_params)
     if @author.save
@@ -20,6 +22,12 @@ class AuthorsController < ApplicationController
 
   def new_modal_link
     render partial: 'new_modal_link'
+  end
+
+  private
+
+  def require_turbo_frame
+    redirect_to new_entry_path unless turbo_frame_request?
   end
 
   def author_params
